@@ -44,6 +44,7 @@ public class ContactsProviderImpl extends ContextWrapper implements ContactsProv
 			{
 				contacts.put(number, name);
 			}
+
 			c.moveToNext();
 		}
 

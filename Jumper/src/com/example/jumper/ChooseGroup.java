@@ -1,39 +1,24 @@
 package com.example.jumper;
 
-import java.util.HashMap;
 import java.util.Map;
 
+import com.example.jumper.providers.common.ContactsGroup;
 import com.example.jumper.providers.impl.ContactsProviderImpl;
 import com.example.jumper.providers.interfaces.ContactsProvider;
 
 import android.app.ListActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckedTextView;
 import android.widget.ListView;
 import android.widget.Toast;
 
 public class ChooseGroup extends ListActivity {
-
+	private static ContactsGroup m_allContacts;
+	private static ContactsGroup m_choosenContacts;
 	private static ContactsProvider m_contactsProvider;
-	private static String[] m_contactNumbers;
-	private static String[] m_contactNames;
-
-	String[] city= {
-			"Bangalore",
-			"Chennai",
-			"Mumbai",
-			"Pune",
-			"Delhi",
-			"Jabalpur",
-			"Indore",
-			"Ranchi",
-			"Hyderabad",
-			"Ahmedabad",
-			"Kolkata",
-			"Bhopal"
-	};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,30 +34,37 @@ public class ChooseGroup extends ListActivity {
 	private void listSetUp() {
 		// Display mode of the ListView
 		ListView listview= getListView();
-		listview.setChoiceMode(listview.CHOICE_MODE_MULTIPLE);
+		listview.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
 
-		// text filtering
+		// Enable text filtering
 		listview.setTextFilterEnabled(true);
 
-		Map<String, String> contacts = new HashMap<String, String>();;
-		try {
-			contacts = doChooseGroup();
-		} catch (Exception e) {
-			Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
-		}
-
-		m_contactNumbers = contacts.keySet().toArray(new String[contacts.keySet().size()]);
-		m_contactNames = contacts.values().toArray(new String[contacts.values().size()]);
+		m_choosenContacts = new ContactsGroup();
+		m_allContacts = new ContactsGroup(doChooseGroup());
 
 		setListAdapter(new ArrayAdapter<String>(this,
-				android.R.layout.simple_list_item_checked,m_contactNames));
+				android.R.layout.simple_list_item_checked, m_allContacts.getNames()));
 	}
 
 	@Override
 	public void onListItemClick(ListView parent, View v,int position,long id){
 		CheckedTextView item = (CheckedTextView) v;
-		Toast.makeText(this, m_contactNames[position] + " checked : " +
-				item.isChecked(), Toast.LENGTH_SHORT).show();
+
+		boolean isChecked = item.isChecked();
+
+		String name = m_allContacts.getNames()[position];
+		String number = m_allContacts.getNumbers()[position];
+
+		if (isChecked)
+		{
+			m_choosenContacts.add(number, name);
+		}
+		else
+		{
+			m_choosenContacts.removeByNumber(number);
+		}
+
+		Toast.makeText(this, (isChecked ? " נוסף " : " הורד " ) + name, Toast.LENGTH_SHORT).show();
 	}
 
 	public Map<String, String> doChooseGroup() {
