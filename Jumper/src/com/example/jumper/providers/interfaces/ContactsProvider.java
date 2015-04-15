@@ -1,4 +1,4 @@
-package com.example.jumper.utils.interfaces;
+package com.example.jumper.providers.interfaces;
 
 import java.util.Map;
 

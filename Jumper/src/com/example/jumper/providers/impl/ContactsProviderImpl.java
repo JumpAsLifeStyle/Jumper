@@ -1,15 +1,15 @@
-package com.example.jumper.utils.impl;
+package com.example.jumper.providers.impl;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import com.example.jumper.providers.interfaces.ContactsProvider;
 
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.database.Cursor;
 import android.provider.ContactsContract;
 import android.util.Log;
-
-import com.example.jumper.utils.interfaces.ContactsProvider;
 
 public class ContactsProviderImpl extends ContextWrapper implements ContactsProvider {
 

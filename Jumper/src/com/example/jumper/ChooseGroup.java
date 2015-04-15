@@ -3,8 +3,8 @@ package com.example.jumper;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.example.jumper.utils.impl.ContactsProviderImpl;
-import com.example.jumper.utils.interfaces.ContactsProvider;
+import com.example.jumper.providers.impl.ContactsProviderImpl;
+import com.example.jumper.providers.interfaces.ContactsProvider;
 
 import android.app.ListActivity;
 import android.os.Bundle;
