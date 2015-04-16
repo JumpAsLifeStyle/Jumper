@@ -8,13 +8,43 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.jumper.ChooseGroup$PlaceholderFragment" >
 
-	<ListView
-        android:id="@+id/android:list"
+     <RelativeLayout
+        android:id="@+id/top"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-		android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true" >
-    </ListView>
+        android:layout_height="40dp"
+        android:layout_margin="5dp" >
+
+        <EditText
+            android:id="@+id/edSearch"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:background="@null"
+            android:hint="חיפוש"
+            android:imeOptions="actionSearch"
+            android:singleLine="true" />
+
+        <Button
+            android:id="@+id/btnContactsApproval"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+			android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:text="אישור" />
+
+    </RelativeLayout>
+
+	<ListView
+	    android:id="@+id/android:list"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+		android:layout_alignStart="@+id/top"
+	    android:layout_alignLeft="@+id/top"
+	    android:layout_alignParentLeft="true"
+	    android:layout_alignParentStart="true"
+	    android:layout_below="@+id/top">
+
+	</ListView>
     
 </RelativeLayout>

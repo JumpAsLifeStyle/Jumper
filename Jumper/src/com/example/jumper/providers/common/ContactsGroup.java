@@ -6,6 +6,7 @@ import java.util.Map;
 
 public class ContactsGroup {
 	static final String DEFAULT_NAME = "DEFAULT_NAME";
+	static final String GROUP_NAME_DELIMETER = "~";
 	static final String NUMBERS_DELIMETER = "|";
 
 	private String m_name = DEFAULT_NAME;
@@ -127,6 +128,11 @@ public class ContactsGroup {
 	{
 		return numbers.split(NUMBERS_DELIMETER);
 	}
+
+	//	public String export ()
+	//	{
+	//		return ();
+	//	}
 
 	/**
 	 * Utils
