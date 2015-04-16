@@ -46,10 +46,13 @@ public class ChooseGroup extends ListActivity {
 		/* OUR CODE BEGINS HERE */
 		m_FileManager = new FileManagerImpl();
 		m_contactsProvider = new ContactsProviderImpl(this);
-
+		
 		listSetUp();
-		addListenerOnButton();
+		addListenerOnApprovalButton();
+		addListenerOnCancelButton();
 		enablingSearchFilter();
+		
+		
 	}
 
 	private void enablingSearchFilter() {
@@ -118,7 +121,7 @@ public class ChooseGroup extends ListActivity {
 		return m_contactsProvider.provideContacts();
 	};
 
-	public void addListenerOnButton() {
+	public void addListenerOnApprovalButton() {
 		m_ApproveButton = (Button) findViewById(R.id.btnContactsApproval);
 
 		m_ApproveButton.setOnClickListener(new OnClickListener() {
@@ -134,6 +137,24 @@ public class ChooseGroup extends ListActivity {
 					Toast.makeText(MainActivity.getAppContext(), "נכשלה יצירת קבוצה", Toast.LENGTH_SHORT).show();
 				}
 
+				EditText groupName = (EditText) findViewById(R.id.edGroupName);
+				if (groupName.getText().toString() != ""){
+					m_groupName = groupName.getText().toString();
+				}
+				
+				finish();
+			}
+
+		});
+	}
+	
+	public void addListenerOnCancelButton() {
+		m_CancelButton = (Button) findViewById(R.id.btnCancel);
+
+		m_CancelButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
 				finish();
 			}
 
