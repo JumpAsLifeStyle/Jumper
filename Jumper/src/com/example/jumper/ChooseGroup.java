@@ -1,7 +1,10 @@
 package com.example.jumper;
 
+import java.io.IOException;
 import java.util.Map;
 
+import com.example.jumper.manager.impl.FileManagerImpl;
+import com.example.jumper.manager.interfaces.FileManager;
 import com.example.jumper.providers.common.ContactsGroup;
 import com.example.jumper.providers.impl.ContactsProviderImpl;
 import com.example.jumper.providers.interfaces.ContactsProvider;
@@ -13,6 +16,7 @@ import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckedTextView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class ChooseGroup extends ListActivity {
@@ -39,7 +43,9 @@ public class ChooseGroup extends ListActivity {
 		// Enable text filtering
 		listview.setTextFilterEnabled(true);
 
-		m_choosenContacts = new ContactsGroup();
+		String groupName = "";
+
+		m_choosenContacts = new ContactsGroup(groupName);
 		m_allContacts = new ContactsGroup(doChooseGroup());
 
 		setListAdapter(new ArrayAdapter<String>(this,
@@ -52,8 +58,8 @@ public class ChooseGroup extends ListActivity {
 
 		boolean isChecked = item.isChecked();
 
-		String name = m_allContacts.getNames()[position];
-		String number = m_allContacts.getNumbers()[position];
+		String name = ((TextView)v).getText().toString();
+		String number = m_allContacts.getNumber(name);
 
 		if (isChecked)
 		{
@@ -62,6 +68,19 @@ public class ChooseGroup extends ListActivity {
 		else
 		{
 			m_choosenContacts.removeByNumber(number);
+		}
+
+		if (m_choosenContacts.getNames().length == 3)
+		{
+			FileManager fm = new FileManagerImpl();
+			try {
+				fm.write("pojo.txt", m_choosenContacts.getNumbersAsString(), false);
+
+				fm.read("yolo.txt", "yolo!!!");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 		Toast.makeText(this, (isChecked ? " נוסף " : " הורד " ) + name, Toast.LENGTH_SHORT).show();

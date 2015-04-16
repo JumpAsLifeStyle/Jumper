@@ -5,13 +5,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ContactsGroup {
+	static final String DEFAULT_NAME = "DEFAULT_NAME";
 	static final String NUMBERS_DELIMETER = "|";
+
+	private String m_name = DEFAULT_NAME;
 	private Map<String, String> m_group;
 
 	/**
 	 * Constructors
 	 */
-	public ContactsGroup() {
+	public ContactsGroup(String groupName) {
+		m_name = groupName;
 		this.m_group = new HashMap<String, String>();
 	}
 
@@ -19,9 +23,22 @@ public class ContactsGroup {
 		this.m_group = group;
 	}
 
+	public ContactsGroup(String groupName, Map<String, String> group) {
+		this.m_name = groupName;
+		this.m_group = group;
+	}
+
 	/**
 	 * Gets & Sets
 	 */
+	public String getName() {
+		return m_name;
+	}
+
+	public void setName(String name) {
+		this.m_name = name;
+	}
+
 	public String[] getNumbers() {
 		return ContactsGroup.collectionToArray(this.m_group.keySet());
 	}
@@ -45,6 +62,19 @@ public class ContactsGroup {
 		return this.m_group.get(number);
 	}
 
+	public String getNumber(String name)
+	{
+		for (String number : getNumbers())
+		{
+			if (0 == getName(number).compareTo(name))
+			{
+				return number;
+			}
+		}
+
+		return null;
+	}
+
 	/**
 	 * Actions
 	 */
@@ -63,23 +93,19 @@ public class ContactsGroup {
 
 	public void removeByName(String name)
 	{
-		for (String number : getNumbers())
+		String number = null;
+		if (null != (number = getNumber(name)))
 		{
-			if (0 == getName(number).compareTo(name))
-			{
-				this.m_group.remove(number);
-
-				break;
-			}
+			this.m_group.remove(number);
 		}
 	}
 
 	/**
 	 * Import & Export related
 	 */
-	public ContactsGroup getContactsWithNumbers(String[] numbers)
+	public ContactsGroup getContactsWithNumbers(String groupName, String[] numbers)
 	{
-		ContactsGroup groupContacts = new ContactsGroup();
+		ContactsGroup groupContacts = new ContactsGroup(groupName);
 
 		for (String number : numbers)
 		{
