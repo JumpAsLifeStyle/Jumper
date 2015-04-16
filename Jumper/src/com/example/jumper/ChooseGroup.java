@@ -86,7 +86,7 @@ public class ChooseGroup extends ListActivity {
 		listview.setTextFilterEnabled(true);
 
 		m_choosenContacts = new ContactsGroup(m_groupName);
-		m_allContacts = doChooseGroup();
+		m_allContacts = m_contactsProvider.provideContacts();
 
 		adapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_list_item_checked, m_allContacts.getNames());
@@ -113,10 +113,6 @@ public class ChooseGroup extends ListActivity {
 
 		Toast.makeText(this, (isChecked ? " נוסף " : " הורד " ) + name, Toast.LENGTH_SHORT).show();
 	}
-
-	public ContactsGroup doChooseGroup() {
-		return m_contactsProvider.provideContacts();
-	};
 
 	public void addListenerOnButton() {
 		m_ApproveButton = (Button) findViewById(R.id.btnContactsApproval);
