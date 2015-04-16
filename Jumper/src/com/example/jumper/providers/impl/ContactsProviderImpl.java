@@ -1,8 +1,6 @@
 package com.example.jumper.providers.impl;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import com.example.jumper.providers.common.ContactsGroup;
 import com.example.jumper.providers.interfaces.ContactsProvider;
 
 import android.content.Context;
@@ -18,8 +16,8 @@ public class ContactsProviderImpl extends ContextWrapper implements ContactsProv
 	}
 
 	@Override
-	public Map<String, String> provideContacts() {
-		Map<String, String> contacts = new HashMap<String, String>();
+	public ContactsGroup provideContacts() {
+		ContactsGroup allContacts = new ContactsGroup();
 
 		Cursor c = getContentResolver().query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
 		String name, number = "";
@@ -42,12 +40,12 @@ public class ContactsProviderImpl extends ContextWrapper implements ContactsProv
 
 			if (number != null)
 			{
-				contacts.put(number, name);
+				allContacts.add(number, name);
 			}
 
 			c.moveToNext();
 		}
 
-		return contacts;
+		return allContacts;
 	}
 }

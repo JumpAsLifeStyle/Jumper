@@ -4,7 +4,13 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.example.jumper.MainActivity;
+import com.example.jumper.providers.impl.ContactsProviderImpl;
+import com.example.jumper.providers.interfaces.ContactsProvider;
+
 public class ContactsGroup {
+	static ContactsProvider m_contactsProvider = new ContactsProviderImpl(MainActivity.getAppContext());
+
 	static final String DEFAULT_NAME = "DEFAULT_NAME";
 	static final String GROUP_NAME_DELIMETER = "~";
 	static final String NUMBERS_DELIMETER = "|";
@@ -15,6 +21,10 @@ public class ContactsGroup {
 	/**
 	 * Constructors
 	 */
+	public ContactsGroup() {
+		this.m_group = new HashMap<String, String>();
+	}
+
 	public ContactsGroup(String groupName) {
 		m_name = groupName;
 		this.m_group = new HashMap<String, String>();
@@ -104,15 +114,16 @@ public class ContactsGroup {
 	/**
 	 * Import & Export related
 	 */
-	public ContactsGroup getContactsWithNumbers(String groupName, String[] numbers)
+	public Map<String, String> getContactsWithNumbers(String[] numbers)
 	{
-		ContactsGroup groupContacts = new ContactsGroup(groupName);
+		Map<String, String> groupContacts = new HashMap<String, String>();
+		ContactsGroup allContacts = m_contactsProvider.provideContacts();
 
-		for (String number : numbers)
+		for (String number : allContacts.getNumbers())
 		{
 			if (isNumberExists(number))
 			{
-				groupContacts.add(number, getName(number));
+				groupContacts.put(number, getName(number));
 			}
 		}
 
@@ -129,10 +140,17 @@ public class ContactsGroup {
 		return numbers.split(NUMBERS_DELIMETER);
 	}
 
-	//	public String export ()
-	//	{
-	//		return ();
-	//	}
+	public void importGroup(String toImport)
+	{
+		String[] importTokens = toImport.split(GROUP_NAME_DELIMETER);
+		this.m_name = importTokens[0];
+		this.m_group = getContactsWithNumbers(getNumbersFromString(importTokens[1]));
+	}
+
+	public String exportGroup()
+	{
+		return m_name + GROUP_NAME_DELIMETER + getNumbersAsString();
+	}
 
 	/**
 	 * Utils

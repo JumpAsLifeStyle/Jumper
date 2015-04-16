@@ -1,7 +1,7 @@
 package com.example.jumper.providers.interfaces;
 
-import java.util.Map;
+import com.example.jumper.providers.common.ContactsGroup;
 
 public interface ContactsProvider {
-	Map<String, String> provideContacts();
+	ContactsGroup provideContacts();
 }

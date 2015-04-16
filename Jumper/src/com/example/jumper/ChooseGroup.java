@@ -1,7 +1,6 @@
 package com.example.jumper;
 
 import java.io.IOException;
-import java.util.Map;
 
 import com.example.jumper.manager.impl.FileManagerImpl;
 import com.example.jumper.manager.interfaces.FileManager;
@@ -25,6 +24,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class ChooseGroup extends ListActivity {
+	private static final String GROUPS_FILE_NAME = "JumperGroups.grp";
+
 	private static ContactsGroup m_allContacts;
 	private static ContactsGroup m_choosenContacts;
 	private static ContactsProvider m_contactsProvider;
@@ -32,7 +33,6 @@ public class ChooseGroup extends ListActivity {
 	private String m_groupName;
 
 	private Button m_ApproveButton;
-	private Button m_CancelButton;
 
 	private ArrayAdapter<String> adapter;
 
@@ -86,7 +86,7 @@ public class ChooseGroup extends ListActivity {
 		listview.setTextFilterEnabled(true);
 
 		m_choosenContacts = new ContactsGroup(m_groupName);
-		m_allContacts = new ContactsGroup(doChooseGroup());
+		m_allContacts = doChooseGroup();
 
 		adapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_list_item_checked, m_allContacts.getNames());
@@ -114,7 +114,7 @@ public class ChooseGroup extends ListActivity {
 		Toast.makeText(this, (isChecked ? " נוסף " : " הורד " ) + name, Toast.LENGTH_SHORT).show();
 	}
 
-	public Map<String, String> doChooseGroup() {
+	public ContactsGroup doChooseGroup() {
 		return m_contactsProvider.provideContacts();
 	};
 
@@ -127,7 +127,7 @@ public class ChooseGroup extends ListActivity {
 			public void onClick(View arg0) {
 				try
 				{
-					m_FileManager.write(m_groupName, m_choosenContacts.getNumbersAsString(), false);
+					m_FileManager.write(GROUPS_FILE_NAME, m_choosenContacts.exportGroup(), true);
 				}
 				catch (IOException e)
 				{
